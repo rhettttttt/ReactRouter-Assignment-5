@@ -1,22 +1,32 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function LoginView() {
   const [form, setForm] = useState({ email: '', password: '' });
-  const handleSubmit = e => e.preventDefault();
+  const navigate = useNavigate();
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    // TODO: real auth here
+    navigate('/movies');
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Header />
-      <div className="flex-grow flex items-center justify-center">
+      <div className="flex-grow flex items-center justify-center px-4">
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg"
+          className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg space-y-6"
         >
-          <h2 className="text-2xl font-bold mb-6 text-center">Log In</h2>
-          <label className="block mb-4">
-            <span className="block text-sm font-medium text-gray-700">Email</span>
+          <h2 className="text-2xl font-bold text-center">Log In</h2>
+
+          <label className="block">
+            <span className="block text-sm font-medium text-gray-700">
+              Email
+            </span>
             <input
               type="email"
               value={form.email}
@@ -25,8 +35,11 @@ export default function LoginView() {
               required
             />
           </label>
-          <label className="block mb-6">
-            <span className="block text-sm font-medium text-gray-700">Password</span>
+
+          <label className="block">
+            <span className="block text-sm font-medium text-gray-700">
+              Password
+            </span>
             <input
               type="password"
               value={form.password}
@@ -35,6 +48,7 @@ export default function LoginView() {
               required
             />
           </label>
+
           <button
             type="submit"
             className="w-full py-2 rounded bg-blue-600 hover:bg-blue-500 text-white font-semibold transition"

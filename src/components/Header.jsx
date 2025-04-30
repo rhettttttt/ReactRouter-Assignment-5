@@ -1,15 +1,40 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export default function Header() {
+  const active = 'underline text-red-400';
+  const base   = 'hover:text-red-300 transition';
+
   return (
     <header className="bg-gray-900 text-white p-4 flex justify-between items-center">
-      <div className="text-2xl font-bold">
-        <span className="text-red-500">My</span>MovieApp
-      </div>
-      <nav className="space-x-4">
-        <Link to="/login" className="hover:underline">Login</Link>
-        <Link to="/register" className="hover:underline">Register</Link>
+      <NavLink to="/" className="text-2xl font-bold">
+        <span className="text-red-500">Movie</span>Zone
+      </NavLink>
+      <nav className="space-x-6">
+        <NavLink
+          to="/"
+          className={({ isActive }) => `${base} ${isActive ? active : ''}`}
+        >
+          Home
+        </NavLink>
+        <NavLink
+          to="/movies"
+          className={({ isActive }) => `${base} ${isActive ? active : ''}`}
+        >
+          Movies
+        </NavLink>
+        <NavLink
+          to="/login"
+          className={({ isActive }) => `${base} ${isActive ? active : ''}`}
+        >
+          Login
+        </NavLink>
+        <NavLink
+          to="/register"
+          className={({ isActive }) => `${base} ${isActive ? active : ''}`}
+        >
+          Register
+        </NavLink>
       </nav>
     </header>
   );
