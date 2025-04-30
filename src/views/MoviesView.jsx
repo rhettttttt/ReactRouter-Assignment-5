@@ -1,29 +1,23 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
-import Header from "../../components/Header";
-import Genres from "../../components/Genres";
-import Footer from "../../components/Footer";
+import { Outlet } from 'react-router-dom';
+import Header from '../components/Header';
+import Genres from '../components/Genres';
+import Footer from '../components/Footer';
 
-const genreList = [
-    { genre: "Action", id: 28 },
-    { genre: "Adventure", id: 12 },
-    { genre: "Animation", id: 16 },
-    { genre: "Crime", id: 80 },
-    { genre: "Family", id: 10751 },
-    { genre: "Fantasy", id: 14 },
-    { genre: "History", id: 36 },
-    { genre: "Horror", id: 27 },
-    { genre: "Sci-Fi", id: 878 },
-    { genre: "War", id: 10752 },
-];
-
-export default function MoviesView() {
-    return (
-        <>
-            <Header />
+export default function MoviesView({ genreList }) {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <div className="flex-grow max-w-7xl mx-auto px-4 py-8">
+        <div className="md:flex md:space-x-6">
+          <aside className="md:w-1/4 mb-6 md:mb-0">
             <Genres genres={genreList} />
-            <Outlet />
-            <Footer />
-        </>
-    );
+          </aside>
+          <section className="md:w-3/4">
+            <Outlet /> {/* GenreView or DetailView */}
+          </section>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
 }

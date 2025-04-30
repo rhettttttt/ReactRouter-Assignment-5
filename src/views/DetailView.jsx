@@ -1,48 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function DetailView() {
-  const { id } = useParams();
+export default function DetailView({ movieId }) {
   const [details, setDetails] = useState(null);
-  const [trailer, setTrailer] = useState(null);
+  const [trailers, setTrailers] = useState([]);
 
   useEffect(() => {
-    async function fetchDetails() {
-      const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`);
-      setDetails(res.data);
+    axios
+      .get(`/api/movie/${movieId}`)
+      .then(res => setDetails(res.data))
+      .catch(console.error);
+    axios
+      .get(`/api/movie/${movieId}/videos`)
+      .then(res => setTrailers(res.data.results.filter(v => v.type === 'Trailer')))
+      .catch(console.error);
+  }, [movieId]);
 
-      const vidRes = await axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${import.meta.env.VITE_TMDB_KEY}`);
-      const trailer = vidRes.data.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
-      setTrailer(trailer);
-    }
-
-    fetchDetails();
-  }, [id]);
-
-  if (!details) return <p>Loading...</p>;
+  if (!details) return <p className="text-center py-10">Loading...</p>;
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold">{details.title}</h2>
-      <p><strong>Overview:</strong> {details.overview}</p>
-      <p><strong>Release Date:</strong> {details.release_date}</p>
-      <p><strong>Runtime:</strong> {details.runtime} mins</p>
-      <p><strong>Budget:</strong> ${details.budget}</p>
-      <p><strong>Revenue:</strong> ${details.revenue}</p>
-      <p><strong>Rating:</strong> {details.vote_average}</p>
-      {trailer && (
-        <div className="mt-4">
-          <iframe
-            width="560"
-            height="315"
-            src={`https://www.youtube.com/embed/${trailer.key}`}
-            title="Movie Trailer"
-            frameBorder="0"
-            allowFullScreen
-          ></iframe>
-        </div>
-      )}
+    <div className="space-y-8">
+      <h1 className="text-3xl font-bold">{details.title}</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <img
+          src={`https://image.tmdb.org/t/p/w500${details.poster_path}`}
+          alt={details.title}
+          className="rounded-lg shadow-lg"
+        />
+        <ul className="space-y-2">
+          <li><strong>Release Date:</strong> {details.release_date}</li>
+          <li><strong>Runtime:</strong> {details.runtime} mins</li>
+          <li><strong>Rating:</strong> {details.vote_average}</li>
+          <li><strong>Genres:</strong> {details.genres.map(g => g.name).join(', ')}</li>
+          <li><strong>Overview:</strong> {details.overview}</li>
+          <li><strong>Language:</strong> {details.original_language}</li>
+          <li><strong>Budget:</strong> ${details.budget.toLocaleString()}</li>
+        </ul>
+      </div>
+      <div className="space-y-4">
+        {trailers.map(t => (
+          <div key={t.id} className="aspect-w-16 aspect-h-9">
+            <iframe
+              src={`https://www.youtube.com/embed/${t.key}`}
+              title={t.name}
+              allowFullScreen
+              className="w-full h-full rounded-lg shadow"
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

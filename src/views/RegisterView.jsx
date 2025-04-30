@@ -1,17 +1,81 @@
-import React from 'react';
+import { useState } from 'react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function RegisterView() {
+  const [form, setForm] = useState({
+    firstName: '', lastName: '', email: '', password: '', password2: ''
+  });
+
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Register</h2>
-      <form className="flex flex-col gap-4">
-        <input type="text" placeholder="First Name" className="p-2 border rounded" />
-        <input type="text" placeholder="Last Name" className="p-2 border rounded" />
-        <input type="email" placeholder="Email" className="p-2 border rounded" />
-        <input type="password" placeholder="Password" className="p-2 border rounded" />
-        <input type="password" placeholder="Re-enter Password" className="p-2 border rounded" />
-        <button type="submit" className="bg-green-500 text-white p-2 rounded">Register</button>
-      </form>
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      <Header />
+      <div className="flex-grow flex items-center justify-center">
+        <form className="w-full max-w-lg bg-white p-8 rounded-2xl shadow-lg space-y-4">
+          <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label className="block">
+              <span className="text-sm font-medium text-gray-700">First Name</span>
+              <input
+                type="text"
+                value={form.firstName}
+                onChange={e => setForm({ ...form, firstName: e.target.value })}
+                className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring focus:ring-blue-200"
+                required
+              />
+            </label>
+            <label className="block">
+              <span className="text-sm font-medium text-gray-700">Last Name</span>
+              <input
+                type="text"
+                value={form.lastName}
+                onChange={e => setForm({ ...form, lastName: e.target.value })}
+                className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring focus:ring-blue-200"
+                required
+              />
+            </label>
+          </div>
+          <label className="block">
+            <span className="text-sm font-medium text-gray-700">Email</span>
+            <input
+              type="email"
+              value={form.email}
+                onChange={e => setForm({ ...form, email: e.target.value })}
+                className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring focus:ring-blue-200"
+              required
+            />
+          </label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label className="block">
+              <span className="text-sm font-medium text-gray-700">Password</span>
+              <input
+                type="password"
+                value={form.password}
+                onChange={e => setForm({ ...form, password: e.target.value })}
+                className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring focus:ring-blue-200"
+                required
+              />
+            </label>
+            <label className="block">
+              <span className="text-sm font-medium text-gray-700">Confirm Password</span>
+              <input
+                type="password"
+                value={form.password2}
+                onChange={e => setForm({ ...form, password2: e.target.value })}
+                className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring focus:ring-blue-200"
+                required
+              />
+            </label>
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 rounded bg-green-600 hover:bg-green-500 text-white font-semibold transition"
+          >
+            Register
+          </button>
+        </form>
+      </div>
+      <Footer />
     </div>
   );
 }

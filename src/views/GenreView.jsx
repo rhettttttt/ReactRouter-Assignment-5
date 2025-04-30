@@ -1,33 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function GenreView() {
-  const { genre_id } = useParams();
+export default function GenreView({ genreId }) {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     axios
-      .get(`https://api.themoviedb.org/3/discover/movie?with_genres=${genre_id}&page=${page}&api_key=${import.meta.env.VITE_TMDB_KEY}`)
-      .then((res) => setMovies(res.data.results))
-      .catch((err) => console.error(err));
-  }, [genre_id, page]);
+      .get(`/api/discover/movie?with_genres=${genreId}&page=${page}`)
+      .then(res => setMovies(res.data.results))
+      .catch(console.error);
+  }, [genreId, page]);
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Movies in Genre</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {movies.map((movie) => (
-          <div key={movie.id} className="bg-gray-800 text-white p-2 rounded">
-            {movie.title}
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        {movies.map(m => (
+          <div key={m.id} className="bg-white rounded-lg shadow overflow-hidden">
+            <img
+              src={`https://image.tmdb.org/t/p/w300${m.poster_path}`}
+              alt={m.title}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-3">
+              <h3 className="text-lg font-medium">{m.title}</h3>
+            </div>
           </div>
         ))}
       </div>
-      <div className="mt-4 flex justify-center gap-4">
-        <button onClick={() => setPage((p) => Math.max(1, p - 1))}>Previous</button>
-        <span>Page {page}</span>
-        <button onClick={() => setPage((p) => p + 1)}>Next</button>
+      <div className="flex justify-center space-x-4">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage(p => p - 1)}
+          className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50 transition"
+        >
+          Previous
+        </button>
+        <button
+          onClick={() => setPage(p => p + 1)}
+          className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 transition"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
