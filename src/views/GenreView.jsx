@@ -1,61 +1,84 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// src/views/GenreView.jsx
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams, Link } from "react-router-dom";
 
 export default function GenreView() {
-  const { genre_id } = useParams();
-  const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
-  const nav = useNavigate();
+    const { genre_id } = useParams();
+    const [movies, setMovies] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    axios
-      .get('https://api.themoviedb.org/3/discover/movie', {
-        params: {
-          api_key: import.meta.env.VITE_TMDB_KEY,
-          with_genres: genre_id,
-          page
-        }
-      })
-      .then(res => setMovies(res.data.results))
-      .catch(console.error);
-  }, [genre_id, page]);
+    useEffect(() => {
+        axios
+            .get("https://api.themoviedb.org/3/discover/movie", {
+                params: {
+                    api_key: import.meta.env.VITE_TMDB_KEY,
+                    with_genres: genre_id,
+                    language: "en-US",
+                    page,
+                },
+            })
+            .then((res) => {
+                setMovies(res.data.results);
+                setTotalPages(res.data.total_pages);
+            })
+            .catch((err) => console.error(err));
+    }, [genre_id, page]);
 
-  return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {movies.map(m => (
-          <div
-            key={m.id}
-            onClick={() => nav(`/movies/details/${m.id}`)}
-            className="bg-white rounded-lg shadow overflow-hidden cursor-pointer hover:shadow-lg transition"
-          >
-            <img
-              src={`https://image.tmdb.org/t/p/w300${m.poster_path}`}
-              alt={m.title}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-3">
-              <h3 className="text-lg font-medium">{m.title}</h3>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="flex justify-center space-x-4">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage(p => p - 1)}
-          className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50 transition"
-        >
-          Previous
-        </button>
-        <button
-          onClick={() => setPage(p => p + 1)}
-          className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 transition"
-        >
-          Next
-        </button>
-      </div>
-    </div>
-  );
+    return (
+        <div className="flex flex-col min-h-screen bg-gray-50">
+            <main className="flex-grow px-4 py-8 max-w-6xl mx-auto">
+                {/* Movies Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                    {movies.map((movie) => (
+                        <Link
+                            key={movie.id}
+                            to={`/movies/details/${movie.id}`}
+                            className="block bg-white rounded overflow-hidden shadow hover:shadow-lg transition"
+                        >
+                            <img
+                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                alt={movie.title}
+                                className="w-full h-[300px] object-cover"
+                            />
+                            <div className="p-2">
+                                <h3 className="text-sm font-semibold truncate">
+                                    {movie.title}
+                                </h3>
+                                <p className="text-xs text-gray-500">
+                                    {movie.release_date}
+                                </p>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+
+                {/* Pagination Controls */}
+                <div className="flex justify-center items-center space-x-4 mt-8">
+                    <button
+                        onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                        disabled={page === 1}
+                        className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+                    >
+                        Prev
+                    </button>
+
+                    <span className="text-gray-700">
+                        Page {page} of {totalPages}
+                    </span>
+
+                    <button
+                        onClick={() =>
+                            setPage((p) => Math.min(p + 1, totalPages))
+                        }
+                        disabled={page === totalPages}
+                        className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+                    >
+                        Next
+                    </button>
+                </div>
+            </main>
+        </div>
+    );
 }
