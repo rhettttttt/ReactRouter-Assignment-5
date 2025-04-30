@@ -14,7 +14,7 @@ export default function Feature() {
         // pick 3 random movies
         const picked = [];
         const used = new Set();
-        while (picked.length < 3 && used.size < results.length) {
+        while (picked.length < 3 && picked.length < results.length) {
           const idx = Math.floor(Math.random() * results.length);
           if (!used.has(idx)) {
             used.add(idx);
