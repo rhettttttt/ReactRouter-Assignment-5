@@ -1,12 +1,16 @@
-import { Link } from "react-router-dom";
-//import "./HomeView.css";
-import Menu from "../../components/Menu";
+import React from 'react';
+import Header from '../../components/Header';
+import Hero from '../../components/Hero';
+import Feature from '../../components/Feature';
+import Footer from '../../components/Footer';
 
 function HomeView() {
   return (
     <div>
-      <Menu />
-      <h1>Home</h1>
+      <Header />
+      <Hero />
+      <Feature />
+      <Footer />
     </div>
   );
 }
