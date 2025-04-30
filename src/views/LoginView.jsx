@@ -4,12 +4,16 @@ import Footer from '../components/Footer';
 
 export default function LoginView() {
   const [form, setForm] = useState({ email: '', password: '' });
+  const handleSubmit = e => e.preventDefault();
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Header />
       <div className="flex-grow flex items-center justify-center">
-        <form className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg"
+        >
           <h2 className="text-2xl font-bold mb-6 text-center">Log In</h2>
           <label className="block mb-4">
             <span className="block text-sm font-medium text-gray-700">Email</span>

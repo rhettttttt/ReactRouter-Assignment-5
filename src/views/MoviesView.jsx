@@ -13,7 +13,7 @@ export default function MoviesView({ genreList }) {
             <Genres genres={genreList} />
           </aside>
           <section className="md:w-3/4">
-            <Outlet /> {/* GenreView or DetailView */}
+            <Outlet />
           </section>
         </div>
       </div>
