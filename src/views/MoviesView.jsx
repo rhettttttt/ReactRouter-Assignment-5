@@ -1,21 +1,29 @@
-import { NavLink, Outlet } from "react-router-dom";
-//import "./MoviesView.css";
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Header from '../components/Header';
+import Genres from '../components/Genres';
+import Footer from '../components/Footer';
 
-function MoviesView() {
-    return (
-        <div className="movies-container">
-            <h1 className="movies-title">Movies</h1>
-            <nav className="movies-nav">
-                <NavLink to="/movies/now_playing" className="nav-link">Now Playing</NavLink>
-                <NavLink to="/movies/popular" className="nav-link">Popular</NavLink>
-                <NavLink to="/movies/top_rated" className="nav-link">Top Rated</NavLink>
-                <NavLink to="/movies/upcoming" className="nav-link">Upcoming</NavLink>
-            </nav>
-            <div className="movies-content">
-                <Outlet />
-            </div>
-        </div>
-    );
+const genreList = [
+  { genre: "Action", id: 28 },
+  { genre: "Adventure", id: 12 },
+  { genre: "Animation", id: 16 },
+  { genre: "Crime", id: 80 },
+  { genre: "Family", id: 10751 },
+  { genre: "Fantasy", id: 14 },
+  { genre: "History", id: 36 },
+  { genre: "Horror", id: 27 },
+  { genre: "Sci-Fi", id: 878 },
+  { genre: "War", id: 10752 },
+];
+
+export default function MoviesView() {
+  return (
+    <>
+      <Header />
+      <Genres genres={genreList} />
+      <Outlet />
+      <Footer />
+    </>
+  );
 }
-
-export default MoviesView;

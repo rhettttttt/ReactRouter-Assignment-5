@@ -1,52 +1,17 @@
-import { useNavigate } from "react-router-dom";
-//import "./RegisterView.css";
+import React from 'react';
 
 export default function RegisterView() {
-
-    const navigate = useNavigate();
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        navigate('/movies/now_playing');
-    };
-
-    return (
-        <div className="register-container">
-            <div className="register-form">
-                <h2 className="register-title">Register</h2>
-                <form onSubmit={handleSubmit} className="form">
-                    <div className="form-group">
-                        <label className="form-label">Name</label>
-                        <input
-                            type="text"
-                            name="name"
-                            className="form-input"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label">Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            className="form-input"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label">Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            className="form-input"
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="submit-btn">
-                        Register
-                    </button>
-                </form>
-            </div>
-        </div>
-    );
+  return (
+    <div className="p-6 max-w-md mx-auto">
+      <h2 className="text-2xl font-bold mb-4">Register</h2>
+      <form className="flex flex-col gap-4">
+        <input type="text" placeholder="First Name" className="p-2 border rounded" />
+        <input type="text" placeholder="Last Name" className="p-2 border rounded" />
+        <input type="email" placeholder="Email" className="p-2 border rounded" />
+        <input type="password" placeholder="Password" className="p-2 border rounded" />
+        <input type="password" placeholder="Re-enter Password" className="p-2 border rounded" />
+        <button type="submit" className="bg-green-500 text-white p-2 rounded">Register</button>
+      </form>
+    </div>
+  );
 }
